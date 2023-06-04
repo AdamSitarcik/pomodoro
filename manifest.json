@@ -16,5 +16,6 @@
         },
         "default_title": "Pomodoro extension action title",
         "default_popup": "popup/popup.html"
-    }
+    },
+    "permissions": ["storage"]
 }
