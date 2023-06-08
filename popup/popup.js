@@ -1,5 +1,27 @@
 let tasks = [];
 
+const config = {
+    work_time: 15,
+};
+
+const updateTime = () => {
+    chrome.storage.local.get(['timer'], (res) => {
+        const time = document.getElementById('time');
+        const minutes = `${Math.floor(
+            config.work_time - res.timer / 60
+        )}`.padStart(2, '0');
+        const seconds = `${60 - (res.timer % 60)}`.padStart(2, '0');
+        time.textContent = `${minutes}:${seconds === '60' ? '00' : seconds}`;
+
+        chrome.action.setBadgeText({
+            text: `${minutes}:${seconds === '60' ? '00' : seconds}`,
+        });
+    });
+};
+
+updateTime();
+setInterval(updateTime, 1000);
+
 const startTimerBtn = document.getElementById('start-timer-btn');
 startTimerBtn.addEventListener('click', () => {
     chrome.storage.local.get(['isRunning'], (res) => {
@@ -18,6 +40,7 @@ resetTimerBtn.addEventListener('click', () => {
         },
         () => {
             startTimerBtn.textContent = 'Start';
+            updateTime();
         }
     );
 });
