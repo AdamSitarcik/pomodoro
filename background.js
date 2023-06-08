@@ -4,17 +4,27 @@ chrome.alarms.create('pomodoroTimer', {
 
 chrome.alarms.onAlarm.addListener((alarm) => {
     if (alarm.name === 'pomodoroTimer') {
-        chrome.storage.local.get(['timer', 'isRunning'], (res) => {
+        chrome.storage.local.get(['timer', 'isRunning', 'workingTime', 'pauseTime'], (res) => {
+            console.log('skuska');
+            const seconds = `${60 - (res.timer % 60)}`.padStart(2, '0');
+            const minutes = `${Math.floor(res.workingTime - res.timer / 60)}`.padStart(
+                2,
+                '0'
+            );
+
+            chrome.action.setBadgeText({
+                text: `${minutes}:${seconds === '60' ? '00' : seconds}`,
+            });
+
             if (res.isRunning) {
                 let timer = res.timer + 1;
                 let isRunning = true;
                 console.log(timer);
-                console.log(timer % 20 === 0);
-                if (timer === 60 * 25) {
+                if (timer === 60 * res.workingTime) {
                     this.registration.showNotification(
                         'Pomodoro notification',
                         {
-                            body: '25 minutes passed',
+                            body: `${res.workingTime} minutes passed`,
                             icon: 'icon.png',
                         }
                     );

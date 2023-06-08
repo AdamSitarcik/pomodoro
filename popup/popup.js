@@ -1,21 +1,14 @@
 let tasks = [];
 
-const config = {
-    work_time: 15,
-};
 
 const updateTime = () => {
-    chrome.storage.local.get(['timer'], (res) => {
+    chrome.storage.local.get(['timer','workingTime','pauseTime'], (res) => {
         const time = document.getElementById('time');
         const minutes = `${Math.floor(
-            config.work_time - res.timer / 60
+            res.workingTime - res.timer / 60
         )}`.padStart(2, '0');
         const seconds = `${60 - (res.timer % 60)}`.padStart(2, '0');
         time.textContent = `${minutes}:${seconds === '60' ? '00' : seconds}`;
-
-        chrome.action.setBadgeText({
-            text: `${minutes}:${seconds === '60' ? '00' : seconds}`,
-        });
     });
 };
 
