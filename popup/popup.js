@@ -1,12 +1,20 @@
 let tasks = [];
 
+let workingTime = 25;
+let pauseTime = 5;
 
 const updateTime = () => {
-    chrome.storage.local.get(['timer','workingTime','pauseTime'], (res) => {
+    chrome.storage.sync.get(['workingTime', 'pauseTime'], (res) => {
+        workingTime = res.workingTime;
+        pauseTime = res.pauseTime;
+    });
+
+    chrome.storage.local.get(['timer'], (res) => {
         const time = document.getElementById('time');
-        const minutes = `${Math.floor(
-            res.workingTime - res.timer / 60
-        )}`.padStart(2, '0');
+        const minutes = `${Math.floor(workingTime - res.timer / 60)}`.padStart(
+            2,
+            '0'
+        );
         const seconds = `${60 - (res.timer % 60)}`.padStart(2, '0');
         time.textContent = `${minutes}:${seconds === '60' ? '00' : seconds}`;
     });

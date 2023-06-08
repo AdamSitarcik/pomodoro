@@ -21,6 +21,7 @@ saveBtn.addEventListener('click', () => {
     const pauseTime = pauseTimeInput.value;
 
     chrome.storage.sync.set({ workingTime: workingTime, pauseTime: pauseTime });
+    chrome.storage.local.set({ timer: 0, isRunning: false });
 });
 
 chrome.storage.sync.get(['workingTime', 'pauseTime'], (res) => {
