@@ -7,7 +7,7 @@ const saveBtn = document.getElementById('save-btn');
 workingTimeInput.addEventListener('change', (event) => {
     const value = event.target.value;
     if (value < 1 || value > 60) {
-        workingTimeInput.value = 25;
+        workingTimeInput.value = 20;
     }
 });
 

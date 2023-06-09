@@ -35,12 +35,13 @@ const updateTime = () => {
         infoElement.textContent = res.isPause ? 'Pause' : 'Work';
         time.textContent = `${minutes}:${seconds === '60' ? '00' : seconds}`;
 
-        console.log('cycle number ' + res.cycleNumber);
-        console.log('cycle limit' + cycleLimit);
-
         cycleInfoElement.textContent = `This is cycle # ${
             res.cycleNumber + 1
         }/${cycleLimit}.`;
+
+        chrome.action.setBadgeText({
+            text: `${minutes}:${seconds === '60' ? '00' : seconds}`,
+        });
     });
 };
 

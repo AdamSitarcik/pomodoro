@@ -10,7 +10,7 @@ chrome.alarms.onAlarm.addListener((alarm) => {
             workingTime = res.workingTime ? res.workingTime : 25;
             pauseTime = res.pauseTime ? res.pauseTime : 5;
             longPauseTime = res.longPauseTime ? res.longPauseTime : 20;
-            cycleLimit = res.cycleLimit ? res.cycleLimit : 4;
+            cycleLimit = res.cycleLimit ? Number(res.cycleLimit) : 4;
         }
     );
 
@@ -40,7 +40,6 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 
                 if (res.isRunning) {
                     let timer = res.timer + 1;
-                    console.log(timer);
 
                     if (timer === 60 * timeLimit) {
                         isPause = !isPause;
@@ -66,6 +65,7 @@ chrome.alarms.onAlarm.addListener((alarm) => {
                             cycleNumber = 0;
                         }
                     }
+
                     chrome.storage.local.set({
                         timer: timer,
                         isPause: isPause,
