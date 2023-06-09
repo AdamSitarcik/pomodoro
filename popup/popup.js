@@ -1,33 +1,57 @@
 let tasks = [];
 
-let workingTime = 25;
-let pauseTime = 5;
+let workingTime, pauseTime, longPauseTime, cycleLimit;
+chrome.storage.sync.get(
+    ['workingTime', 'pauseTime', 'longPauseTime', 'cycleLimit'],
+    (res) => {
+        workingTime = res.workingTime ? res.workingTime : 25;
+        pauseTime = res.pauseTime ? res.pauseTime : 5;
+        longPauseTime = res.longPauseTime ? res.longPauseTime : 20;
+        cycleLimit = res.cycleLimit ? res.cycleLimit : 4;
+    }
+);
 
 const updateTime = () => {
-    chrome.storage.sync.get(['workingTime', 'pauseTime'], (res) => {
-        workingTime = res.workingTime;
-        pauseTime = res.pauseTime;
-    });
+    chrome.storage.local.get(['timer', 'isPause', 'cycleNumber'], (res) => {
+        let timeLimit = workingTime;
 
-    chrome.storage.local.get(['timer'], (res) => {
+        if (res.isPause) {
+            timeLimit = pauseTime;
+            if (res.cycleNumber === cycleLimit - 1) {
+                timeLimit = longPauseTime;
+            }
+        }
+
         const time = document.getElementById('time');
-        const minutes = `${Math.floor(workingTime - res.timer / 60)}`.padStart(
+        const minutes = `${Math.floor(timeLimit - res.timer / 60)}`.padStart(
             2,
             '0'
         );
         const seconds = `${60 - (res.timer % 60)}`.padStart(2, '0');
+
+        const infoElement = document.getElementById('info');
+        const cycleInfoElement = document.getElementById('cycle-info');
+
+        infoElement.textContent = res.isPause ? 'Pause' : 'Work';
         time.textContent = `${minutes}:${seconds === '60' ? '00' : seconds}`;
+
+        console.log('cycle number ' + res.cycleNumber);
+        console.log('cycle limit' + cycleLimit);
+
+        cycleInfoElement.textContent = `This is cycle # ${
+            res.cycleNumber + 1
+        }/${cycleLimit}.`;
     });
 };
 
 updateTime();
 setInterval(updateTime, 1000);
 
-const startTimerBtn = document.getElementById('start-timer-btn');
-startTimerBtn.addEventListener('click', () => {
+const toggleTimerBtn = document.getElementById('toggle-timer-btn');
+toggleTimerBtn.addEventListener('click', () => {
     chrome.storage.local.get(['isRunning'], (res) => {
         chrome.storage.local.set({ isRunning: !res.isRunning }, () => {
-            startTimerBtn.textContent = !res.isRunning ? 'Pause' : 'Start';
+            toggleTimerBtn.textContent = !res.isRunning ? 'Pause' : 'Start';
         });
     });
 });
@@ -38,9 +62,11 @@ resetTimerBtn.addEventListener('click', () => {
         {
             timer: 0,
             isRunning: false,
+            isPause: false,
+            cycleNumber: 0,
         },
         () => {
-            startTimerBtn.textContent = 'Start';
+            toggleTimerBtn.textContent = 'Start';
             updateTime();
         }
     );
