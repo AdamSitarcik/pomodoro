@@ -8,36 +8,50 @@
         <title>Pomodoro timer options</title>
     </head>
     <body>
-        <h1>Pomodoro timer options</h1>
-        <input
-            type="number"
-            min="1"
-            max="60"
-            id="input-working-time"
-            placeholder="Working time"
-        />
-        <input
-            type="number"
-            min="1"
-            max="20"
-            id="input-pause-time"
-            placeholder="Pause time"
-        />
-        <input
-            type="number"
-            min="1"
-            max="40"
-            id="input-long-pause-time"
-            placeholder="Long pause time"
-        />
-        <input
-            type="number"
-            min="1"
-            max="10"
-            id="input-cycle-limit"
-            placeholder="Number of cycles"
-        />
-        <button id="save-btn">Save</button>
+        <div class="container">
+            <h1>Pomodoro timer options</h1>
+            <div class="input-container">
+                <label for="input-working-time">Working time</label>
+                <input
+                    type="number"
+                    min="1"
+                    max="60"
+                    id="input-working-time"
+                    placeholder="Working time"
+                />
+            </div>
+            <div class="input-container">
+                <label for="input-pause-time">Pause time</label>
+                <input
+                    type="number"
+                    min="1"
+                    max="20"
+                    id="input-pause-time"
+                    placeholder="Pause time"
+                />
+            </div>
+            <div class="input-container">
+                <label for="input-long-pause-time">Long pause time</label>
+                <input
+                    type="number"
+                    min="1"
+                    max="40"
+                    id="input-long-pause-time"
+                    placeholder="Long pause time"
+                />
+            </div>
+            <div class="input-container">
+                <label for="input-cycle-limit">Number of cycles</label>
+                <input
+                    type="number"
+                    min="1"
+                    max="10"
+                    id="input-cycle-limit"
+                    placeholder="Number of cycles"
+                />
+            </div>
+            <button id="save-btn">Save</button>
+        </div>
     </body>
     <script src="options.js"></script>
 </html>

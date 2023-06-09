@@ -38,6 +38,20 @@ chrome.alarms.onAlarm.addListener((alarm) => {
                     text: `${minutes}:${seconds === '60' ? '00' : seconds}`,
                 });
 
+                if (!isPause) {
+                    chrome.action.setBadgeBackgroundColor({
+                        color: 'rgb(165,42,42)',
+                    });
+                    chrome.action.setBadgeTextColor({
+                        color: 'rgb(245,245,245)',
+                    });
+                } else {
+                    chrome.action.setBadgeBackgroundColor({ color: 'green' });
+                    chrome.action.setBadgeTextColor({
+                        color: 'rgb(245,245,245)',
+                    });
+                }
+
                 if (res.isRunning) {
                     let timer = res.timer + 1;
 
@@ -49,8 +63,8 @@ chrome.alarms.onAlarm.addListener((alarm) => {
                             {
                                 body: isPause
                                     ? cycleNumber === cycleLimit - 1
-                                        ? 'Long'
-                                        : 'Short' + ' pause!'
+                                        ? 'Long pause!'
+                                        : 'Short pause!'
                                     : 'Go to work!',
                                 icon: 'icon.png',
                             }

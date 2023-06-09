@@ -101,6 +101,7 @@ const renderTask = (taskNum) => {
     });
 
     const deleteBtn = document.createElement('input');
+    deleteBtn.classList.add('delete-btn');
     deleteBtn.type = 'button';
     deleteBtn.value = 'X';
     deleteBtn.addEventListener('click', () => {
